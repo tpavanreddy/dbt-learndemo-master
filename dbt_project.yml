@@ -35,9 +35,9 @@ models:
   jaffle_shop:
     staging:
       +materialized: |
-            {% if   "{{env_var('DBT_DB_TARGET_NAME')}}" == 'prod' %} table    
-            {% elif "{{env_var('DBT_DB_TARGET_NAME')}}" == 'qa' %} view
-            {% elif "{{env_var('DBT_DB_TARGET_NAME')}}" == 'dev' %} view
+            {% if   target.name == 'prod' %} table    
+            {% elif target.name == 'qa' %} view
+            {% elif target.name == 'dev' %} view
             {%- else -%} invalid_materilisation
             {%endif%}
     marts:
