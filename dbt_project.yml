@@ -33,7 +33,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   jaffle_shop:
+    database: "{{env_var('DBT_DB_NAME')}}"
+    schema: "{{env_var('DBT_DB_SCHEMA_NAME')}}"
     staging:
-      +materialized: view
+      +materialized: |
+            {% if   "{{env_var('DBT_DB_TARGET_NAME')}}" == 'prod' %} table    
+            {% elif "{{env_var('DBT_DB_TARGET_NAME')}}" == 'qa' %} view
+            {% elif "{{env_var('DBT_DB_TARGET_NAME')}}" == 'dev' %} view
+            {%- else -%} invalid_materilisation
+            {%endif%}
     marts:
       +materialized: table
