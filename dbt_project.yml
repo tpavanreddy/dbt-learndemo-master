@@ -35,10 +35,10 @@ models:
   jaffle_shop:
     staging:
       +materialized: |
-            {% if   target.name == 'prod' %} table    
-            {% elif target.name == 'qa' %} view
-            {% elif target.name == 'dev' %} view
-            {%- else -%} invalid_materilisation
-            {%endif%}
+          {%- if   target.name == 'prod' -%} table    
+          {%- elif target.name == 'qa' -%} view
+          {%- elif target.name == 'dev' -%} view
+          {%- else -%} invalid_materilisation
+          {%endif%}
     marts:
       +materialized: table
